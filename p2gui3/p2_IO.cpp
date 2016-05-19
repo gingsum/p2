@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <iostream>
 
+const int MAX_SIZE = 1024;
 void DisplayErrorBox(LPTSTR lpszFunction);
 
 struct Dir_Table{
@@ -21,9 +22,9 @@ struct Dir_Table{
     int minute = 0;
     int second = 0;
     long size = 0;
-    char* filename = (char*)malloc(64);
+    char filename[64];
     bool folder = false;
-} curr_table[1024];    // currently supports 1024 items in a folder
+} curr_table[MAX_SIZE];    // currently supports MAX_SIZE items in a folder
 
 void print_directory(){
     int index = 0;
@@ -51,150 +52,6 @@ void swap(int index_small, int index_big){
 long time_to_seconds(struct Dir_Table element){
   return element.day*86400 + element.hour*3600 + 
          element.minute*60 + element.second;
-}
-
-void sort_by_size_dec(){	
-  int index = 0;
-  while (curr_table[index].year != 0){
-    int j = index;
-    while(curr_table[j].year != 0){
-      if(curr_table[index].size < curr_table[j].size){
-      	swap(index,j);
-      }
-      j++;
-    }
-    index++;
-  }   
-}
-void sort_by_size_asc(){
-  int index = 0;
-  while (curr_table[index].year != 0){
-    int j = index;
-    while(curr_table[j].year != 0){
-      if(curr_table[index].size > curr_table[j].size)
-        swap(index,j);
-      j++;
-    }
-    index++;
-  }   
-}
-void sort_by_time_des(){
-  int index = 0;
-  while (curr_table[index].year != 0){
-    // find the latest time first
-    int j = index;
-    while(curr_table[j].year != 0){
-      if(curr_table[index].year < curr_table[j].year)
-        swap(index,j);
-      else if(curr_table[index].year == curr_table[j].year)
-        if(curr_table[index].month < curr_table[j].month)
-          swap(index,j);
-        else if(curr_table[index].month == curr_table[j].month)
-          if(time_to_seconds(curr_table[index]) < time_to_seconds(curr_table[j]))
-              swap(index, j);
-      j++;
-    }
-    index++;
-  }
-}
-void sort_by_time_asc(){
-  int index = 0;
-  while (curr_table[index].year != 0){
-    // find the latest time first
-    int j = index;
-    while(curr_table[j].year != 0){
-      if(curr_table[index].year > curr_table[j].year)
-        swap(index,j);
-      else if(curr_table[index].year == curr_table[j].year)
-        if(curr_table[index].month > curr_table[j].month)
-          swap(index,j);
-        else if(curr_table[index].month == curr_table[j].month)
-          if(time_to_seconds(curr_table[index]) > time_to_seconds(curr_table[j]))
-              swap(index, j);
-      j++;
-    }
-    index++;
-  }
-}
-void sort_by_type_dir(){
-	int index = 0;
-	while (curr_table[index].year != 0){
-		if(curr_table[index].folder == true){
-			index++;
-			continue;
-		}
-		else {
-			int j = index;
-			while(curr_table[j].year != 0){
-				if(curr_table[j].folder == true){
-					swap(index,j);
-					break;
-				}
-				j++;
-			}
-		}
-		index++;
-	}
-}
-void sort_by_type_file(){
-	int index = 0;
-	while (curr_table[index].year != 0){
-		if(curr_table[index].folder == false){
-			index++;
-			continue;
-		}
-		else {
-			int j = index;
-			while(curr_table[j].year != 0){
-				if(curr_table[j].folder == false){
-					swap(index,j);
-					break;
-				}
-				j++;
-			}
-		}
-		index++;
-	}
-}
-void sort_by_name_dec(){
-  int index = 0;
-  while (curr_table[index].year != 0){
-    int j = index;
-    char temp_index[sizeof(curr_table[index].filename)];
-    int m;
-    for(m = 0; curr_table[index].filename[m]; m++)
-    	temp_index[m] = tolower(curr_table[index].filename[m]);
-    while(curr_table[j].year != 0){
-    	char temp_j[sizeof(curr_table[j].filename)];
-    	int n;
-    	for(n = 0; curr_table[j].filename[n]; n++)
-  		  	temp_index[n] = tolower(curr_table[j].filename[n]);
-      	if(strcmp(temp_index,temp_j) > 0)
-        	swap(index,j);
-      	j++;
-    }
-    index++;
-  }  
-}
-void sort_by_name_asc(){
-  int index = 0;
-  while (curr_table[index].year != 0){
-    int j = index;
-    char temp_index[sizeof(curr_table[index].filename)];
-    int m;
-    for(m = 0; curr_table[index].filename[m]; m++)
-    	temp_index[m] = tolower(curr_table[index].filename[m]);
-    while(curr_table[j].year != 0){
-    	char temp_j[sizeof(curr_table[j].filename)];
-    	int n;
-    	for(n = 0; curr_table[j].filename[n]; n++)
-  		  	temp_index[n] = tolower(curr_table[j].filename[n]);
-      	if(strcmp(temp_index,temp_j) < 0)
-        	swap(index,j);
-      	j++;
-    }
-    index++;
-  } 
 }
 
 void DisplayErrorBox(LPTSTR lpszFunction) 
@@ -232,7 +89,7 @@ void DisplayErrorBox(LPTSTR lpszFunction)
 JNIEXPORT void JNICALL Java_p2gui_resetData
   (JNIEnv *env, jobject obj){
   	int i = 0;
-  	for(int i = 0; i < 1024; i++){
+  	for(int i = 0; i < MAX_SIZE; i++){
   		curr_table[i].year = 0;
   		curr_table[i].month = 0;
   		curr_table[i].day = 0;
@@ -240,9 +97,18 @@ JNIEXPORT void JNICALL Java_p2gui_resetData
   		curr_table[i].minute = 0;
   		curr_table[i].second = 0;
   		curr_table[i].size = 0;
-  		curr_table[i].filename = "";
+  		curr_table[i].filename[0] = '\0';
   		curr_table[i].folder = false;
   	}
+}
+
+int cmpfunc (const void * a, const void * b)
+{
+  Dir_Table *tableA = (Dir_Table *)a;
+  Dir_Table *tableB = (Dir_Table *)b;
+
+  //return strcmp(tableA->filename, tableB->filename);
+  return tableA->size - tableB->size;
 }
 
 JNIEXPORT jint JNICALL Java_p2gui_setCurrDir
@@ -271,8 +137,8 @@ JNIEXPORT jint JNICALL Java_p2gui_setCurrDir
 	char* timestamp = (char*)malloc(32);
 	char* buffer = (char*)malloc(8);
 	int index = 0;
-	do
-	{
+
+	do {
 		filesize.LowPart = ffd.nFileSizeLow;
 		filesize.HighPart = ffd.nFileSizeHigh;
 
@@ -342,21 +208,9 @@ JNIEXPORT jint JNICALL Java_p2gui_setCurrDir
 	FindClose(hFind);
 
 	env->ReleaseStringUTFChars(currDir, cd);
-	sort_by_name_dec();
-//	free(timestamp);
-//	free(buffer);
+//	qsort(curr_table, MAX_SIZE, sizeof(Dir_Table), cmpfunc);
 	return index;
 }
-
-JNIEXPORT void JNICALL Java_p2gui_goUpOneDir
-  (JNIEnv *env, jobject obj){
-
-}
-
-JNIEXPORT void JNICALL Java_p2gui_goToDir
-  (JNIEnv *env, jobject obj, jstring dir){
-
-} 
 
 JNIEXPORT jintArray JNICALL Java_p2gui_date
   (JNIEnv *env, jobject obj, jint index){
@@ -405,39 +259,6 @@ JNIEXPORT jboolean JNICALL Java_p2gui_type
 	ret = (jboolean) type;
 
 	return ret;
-}
-
-JNIEXPORT void JNICALL Java_p2gui_sort
-	(JNIEnv *env, jobject obj, jint index){
-		sort_by_size_dec();
-/*
-	if(index == 0){
-		char temp1[sizeof(curr_table[0].filename)];
-    	int n;
-    	for(n = 0; curr_table[0].filename[n]; n++)
-  		  	temp1[n] = tolower(curr_table[0].filename[n]);
-  		char temp2[sizeof(curr_table[1].filename)];
-    	int m;
-    	for(m = 0; curr_table[1].filename[m]; m++)
-  		  	temp2[m] = tolower(curr_table[1].filename[m]);
-      	if(strcmp(temp1,temp2) > 0)
-      		sort_by_name_asc();
-      	else	
-			sort_by_name_dec();
-	
-
-		sort_by_name_dec();
-	} else if (index == 1){
-
-		sort_by_time_asc();
-//		sort_by_time_des();
-	} else if (index == 2){
-		sort_by_type_file();
-//		sort_by_type_dir();
-	} else if (index == 3){
-		sort_by_size_asc();
-//		sort_by_name_dec();
-	}*/
 }
 
 void main(){}

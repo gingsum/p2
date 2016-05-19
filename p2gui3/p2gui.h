@@ -125,22 +125,6 @@ JNIEXPORT void JNICALL Java_p2gui_resetData
 JNIEXPORT jint JNICALL Java_p2gui_setCurrDir
   (JNIEnv *, jobject, jstring);
 
-/*
- * Class:     p2gui
- * Method:    goUpOneDir
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_p2gui_goUpOneDir
-  (JNIEnv *, jobject);
-
-/*
- * Class:     p2gui
- * Method:    sort
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_p2gui_sort
-  (JNIEnv *, jobject, jint);
-
 #ifdef __cplusplus
 }
 #endif
