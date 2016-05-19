@@ -1,0 +1,1 @@
+char* get_process_name1@{

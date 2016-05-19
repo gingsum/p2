@@ -1,0 +1,69 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x652461e0, pid=8164, tid=0x000027a8
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_92-b14) (build 1.8.0_92-b14)
+# Java VM: Java HotSpot(TM) Client VM (25.92-b14 mixed mode windows-x86 )
+# Problematic frame:
+# V  [jvm.dll+0x1e61e0]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00d1d000):  VMThread [stack: 0x010c0000,0x01110000] [id=10152]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x00000004
+
+Registers:
+EAX=0x00000000, EBX=0x00000000, ECX=0x00000000, EDX=0x0110f968
+ESP=0x0110f918, EBP=0x0110f91c, ESI=0x0110f938, EDI=0x653bcc9c
+EIP=0x652461e0, EFLAGS=0x00010246
+
+Top of Stack: (sp=0x0110f918)
+0x0110f918:   00d6d000 0110fafc 651d97c7 0110f938
+0x0110f928:   0110f968 00000001 00000000 00000000
+0x0110f938:   00a3f870 00000000 00000000 00000000
+0x0110f948:   00000000 00000000 00a3f870 00000000
+0x0110f958:   00000000 00000000 00000000 00000000
+0x0110f968:   00000000 00000000 00000000 00000000
+0x0110f978:   00000000 6f1b1e78 00000000 0110fb18
+0x0110f988:   00000000 0110fb10 001a0018 6f1b1e78 
+
+Instructions: (pc=0x652461e0)
+0x652461c0:   c6 5e 5d c2 08 00 83 79 08 00 8b 75 08 74 0e 52
+0x652461d0:   56 e8 7a fc ff ff 8b c6 5e 5d c2 08 00 8b 49 10
+0x652461e0:   8b 41 04 8b 11 50 83 c1 08 52 51 8b ce e8 7e f4
+0x652461f0:   e2 ff 8b c6 5e 5d c2 08 00 cc cc cc cc cc cc cc 
+
+
+Register to memory mapping:
+
+EAX=0x00000000 is an unknown value
+EBX=0x00000000 is an unknown value
+ECX=0x00000000 is an unknown value
+EDX=0x0110f968 is an unknown value
+ESP=0x0110f918 is an unknown value
+EBP=0x0110f91c is an unknown value
+ESI=0x0110f938 is an unknown value
+EDI=0x653bcc9c is an unknown value
+
+
+Stack: [0x010c0000,0x01110000],  sp=0x0110f918,  free space=318k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x1e61e0]
+V  [jvm.dll+0x1797c7]
+V  [jvm.dll+0x173d13]
+V  [jvm.dll+0x168cfe]
+V  [jvm.dll+0x169fc0]
+V  [jvm.dll+0x181425]
+V  [jvm.dll+0x181632]
+V  [jvm.dll+0x1c1376]
+C  [msvcr100.dll+0x5c556]
+C  [msvcr100.dll+0x5c600]
+C  [KERNEL32.DLL+0x17c04]
