@@ -38,7 +38,7 @@ void print_directory(){
         printf("\t<DIR>\t\t\t%s\n", curr_table[index].filename);
       else
         printf("\t%16ld bytes\t%s\n", curr_table[index].size, curr_table[index].filename);
-	index++;
+	  index++;
     }
 }
 
